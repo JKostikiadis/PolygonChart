@@ -1,4 +1,4 @@
-package com.kostikiadis.radarChart;
+package com.kostikiadis.polygonChart;
 
 public class ChartValue {
 

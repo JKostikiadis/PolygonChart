@@ -1,4 +1,4 @@
-package com.kostikiadis.radarChart;
+package com.kostikiadis.polygonChart;
 
 import java.util.ArrayList;
 import java.util.Random;

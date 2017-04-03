@@ -1,4 +1,4 @@
-package com.kostikiadis.radarChart;
+package com.kostikiadis.polygonChart;
 
 import javafx.scene.paint.Color;
 
