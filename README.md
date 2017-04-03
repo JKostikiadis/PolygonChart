@@ -20,7 +20,23 @@ String categories[] = { "  Category A", "Category B", "Category C", "Category D"
 PolygonChart chart = new PolygonChart(485, 400, 4, categories, 0, 10);
 ```
 
-The shape of the chart depends on number of categories you will pass as an argument into the constructor. You have create any kind of polygon for example : 
+The shape of the chart depends on number of categories you will pass as an argument into the constructor. You have create any kind of polygon for example (Image resolution is been reduced to fit the page ) : 
 
 ![Most Of Chart Types ](./preview/ChartTypes.png)
 
+
+Adding value to a chart:
+
+```java
+double values[] = { 5, 2, 8, 6, 9 };
+
+chart.setValues(values);
+```
+Note : you have to add a value for each category so if the number of categories is 5 then you have to pass a double[5] to the setValue() method.
+
+
+
+
+## Licence
+-------
+[GNU GENERAL PUBLIC LICENSE](LICENSE)
