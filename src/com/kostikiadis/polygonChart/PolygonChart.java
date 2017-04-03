@@ -83,10 +83,6 @@ public class PolygonChart extends Region {
 			}
 		});
 
-		this.setOnMouseReleased(e -> {
-			System.out.println("YES");
-		});
-
 		this.setPrefSize(width + borders_insets, height + borders_insets);
 
 		setBorders();
