@@ -1,6 +1,6 @@
 package com.kostikiadis.radarChart;
 
-public class RadarValue {
+public class ChartValue {
 
 	private String category;
 	private double value;
@@ -8,7 +8,7 @@ public class RadarValue {
 	private double x;
 	private double y;
 
-	public RadarValue(String category, double value) {
+	public ChartValue(String category, double value) {
 		this.category = category;
 		this.value = value;
 	}

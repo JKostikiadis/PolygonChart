@@ -1,6 +1,7 @@
 package com.kostikiadis.radarChart;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.animation.ScaleTransition;
 import javafx.beans.value.ChangeListener;
@@ -10,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
@@ -18,7 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class RadarChart extends Region {
+public class PolygonChart extends Region {
 
 	private static final double POINTS_RADIUS = 4;
 
@@ -36,19 +38,23 @@ public class RadarChart extends Region {
 	private double xCenter;
 	private double yCenter;
 	private double radius;
+	private double maxValue;
+	private double minValue;
+
 	private String categoriesName[];
 	private Line[] linesOfPoints;
 
+	private int numberOfShapes;
+	private boolean isAnimated = true;
+
 	private ArrayList<Circle> allCircle = new ArrayList<>();
 	private ArrayList<Text> allCircleTexts = new ArrayList<>();
-	private ArrayList<RadarValue> allValues = new ArrayList<>();
+	private ArrayList<ChartValue> allValues = new ArrayList<>();
 
-	private double maxValue;
-	private double minValue;
-	private int numberOfShapes;
 	private ScaleTransition polygonTransitioAnimation;
+	private Color defaultColors[];
 
-	public RadarChart(int width, int height, int numberOfShapes, String categoriesNames[], double minValue,
+	public PolygonChart(int width, int height, int numberOfShapes, String categoriesNames[], double minValue,
 			double maxValue) {
 
 		this.numberOfShapes = numberOfShapes;
@@ -75,6 +81,10 @@ public class RadarChart extends Region {
 				WIDTH = newSceneWidth.doubleValue();
 				updateChart();
 			}
+		});
+
+		this.setOnMouseReleased(e -> {
+			System.out.println("YES");
 		});
 
 		this.setPrefSize(width + borders_insets, height + borders_insets);
@@ -236,10 +246,10 @@ public class RadarChart extends Region {
 			setMaxCategoryValue(max);
 		}
 
-		RadarValue radValues[] = new RadarValue[categoriesName.length];
+		ChartValue radValues[] = new ChartValue[categoriesName.length];
 
 		for (int i = 0; i < categoriesName.length; i++) {
-			radValues[i] = new RadarValue(categoriesName[i], values[i]);
+			radValues[i] = new ChartValue(categoriesName[i], values[i]);
 
 			Circle circle = new Circle();
 			Text text = new Text();
@@ -253,7 +263,7 @@ public class RadarChart extends Region {
 
 	}
 
-	private void drawValue(RadarValue radObject, Circle circle, Text text) {
+	private void drawValue(ChartValue radObject, Circle circle, Text text) {
 		String category = radObject.getCategory();
 		double value = radObject.getValue();
 		int index = -1;
@@ -332,11 +342,14 @@ public class RadarChart extends Region {
 	public void clearValues() {
 		getChildren().removeAll(allCircle);
 		getChildren().removeAll(allCircleTexts);
+
+		allValues.clear();
+		allCircle.clear();
+		allCircleTexts.clear();
 	}
 
 	private void clearCanvas() {
 		getChildren().clear();
-
 	}
 
 	public void setMaxCategoryValue(double value) {
@@ -359,8 +372,6 @@ public class RadarChart extends Region {
 
 	private void drawPolygon() {
 
-		Color defaultColors[] = { Color.rgb(0, 0, 255, 0.5), Color.rgb(255, 70, 255, 0.6) };
-
 		int categLength = categoriesName.length;
 
 		for (int j = 0; j < allCircle.size() / categLength; j++) {
@@ -377,22 +388,45 @@ public class RadarChart extends Region {
 			Polygon polygon = new Polygon(points);
 			polygon.setStroke(Color.TRANSPARENT);
 
-			polygon.setFill(defaultColors[j]);
+			polygon.setFill(getPolygonColor(j));
 			polygon.setStrokeWidth(2);
 
-			polygonTransitioAnimation = new ScaleTransition(Duration.millis(700), polygon);
+			if (isAnimated) {
+				polygonTransitioAnimation = new ScaleTransition(Duration.millis(700), polygon);
 
-			polygonTransitioAnimation.setFromX(0);
-			polygonTransitioAnimation.setFromY(0);
-			polygonTransitioAnimation.setByX(1.0f);
-			polygonTransitioAnimation.setByY(1.0f);
+				polygonTransitioAnimation.setFromX(0);
+				polygonTransitioAnimation.setFromY(0);
+				polygonTransitioAnimation.setByX(1.0f);
+				polygonTransitioAnimation.setByY(1.0f);
 
-			polygonTransitioAnimation.play();
+				polygonTransitioAnimation.play();
+			}
 
 			getChildren().add(polygon);
 
 		}
 
+	}
+
+	private Paint getPolygonColor(int j) {
+
+		if (defaultColors == null) {
+			defaultColors = new Color[] { 
+					Color.rgb(0, 0, 255, 0.8), 
+					Color.rgb(255, 100, 70, 0.7),
+					Color.rgb(70, 255, 255, 0.65),
+					Color.rgb(255, 70, 255, 0.6),
+					Color.rgb(100, 70, 100, 0.5),
+			};
+		}
+
+		if (j > defaultColors.length) {
+			Random rand = new Random();
+			return Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256), 0.5);
+		}
+
+		// TODO Auto-generated method stub
+		return defaultColors[j];
 	}
 
 	private double getMaxValue(double[] values) {
@@ -405,5 +439,9 @@ public class RadarChart extends Region {
 		}
 
 		return max;
+	}
+
+	public void setAnimation(boolean isAnimated) {
+		this.isAnimated = isAnimated;
 	}
 }
