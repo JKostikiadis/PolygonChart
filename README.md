@@ -43,8 +43,13 @@ And you are able to aply more values on chart with different colors and opacity 
 ![Chart with multiple values](./preview/MultiPolygons.png)
 
 
-The values insertions is animated and can be deactivated if you want by calling ```java chart.setAnimation(false); ```
+## Importand Notes 
 
+The values insertions is animated and can be deactivated if you want by calling 
+```java 
+chart.setAnimation(false); 
+```
+The chart is not optimized in process of redrawing everything, but this is not really a problem and it will be fixed soon. In addition, there is no way to change the five first default colors of the polygons on the chart but a new method will be added soon. If you want to do that you will have to clone the entire project and change it by yourself. The chart will scale with its parent dimensions by default, sometimes if the parent's dimensions are not very wide the chart might look weird so you will have to specify the min max and preferred dimensions to have a nice look.
 
 
 ## Licence
