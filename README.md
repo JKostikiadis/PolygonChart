@@ -35,6 +35,16 @@ chart.setValues(values);
 Note : you have to add a value for each category so if the number of categories is 5 then you have to pass a double[5] to the setValue() method.
 
 
+![Chart with one polygon (value) ](./preview/SinglePolygon.png)
+
+
+And you are able to aply more values on chart with different colors and opacity :
+
+![Chart with multiple values](./preview/MultiPolygons.png)
+
+
+The values insertions is animated and can be deactivated if you want by calling ```java chart.setAnimation(false); ```
+
 
 
 ## Licence
